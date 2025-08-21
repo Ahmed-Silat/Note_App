@@ -22,7 +22,6 @@
     "react-quill": "^2.0.0",
     "react-redux": "^9.2.0",
     "react-router-dom": "^6.28.0",
-    "react-rte": "^0.16.5",
     "redux-persist": "^6.0.0",
     "toastify": "^2.0.1"
   },

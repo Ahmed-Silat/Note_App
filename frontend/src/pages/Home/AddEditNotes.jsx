@@ -5,7 +5,7 @@ import TagInput from "../../components/Input/TagInput";
 // import { toast } from "react-toastify";
 import toast from "react-hot-toast";
 import { createNotes, updateUserNotes } from "../../Service/NotesService";
-import RichTextEditor from "react-rte";
+// import RichTextEditor from "react-rte";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
