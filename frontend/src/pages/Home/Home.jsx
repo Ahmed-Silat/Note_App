@@ -1,4 +1,4 @@
-import { MdAdd, MdDelete } from "react-icons/md";
+import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import NoteCard from "../../components/Cards/NoteCard";
 import { useEffect, useState } from "react";
 import Modal from "react-modal";
@@ -6,8 +6,6 @@ import AddEditNotes from "./AddEditNotes";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar";
-import axios from "axios";
-// import { toast } from "react-toastify";
 import toast from "react-hot-toast";
 import EmptyCard from "../../components/EmptyCard/EmptyCard";
 import {
@@ -18,10 +16,7 @@ import {
 } from "../../Service/NotesService";
 
 const Home = () => {
-  const { currentUser, loading, errorDispatch } = useSelector(
-    (state) => state.user
-  );
-
+  const { currentUser } = useSelector((state) => state.user);
   const [userInfo, setUserInfo] = useState(null);
   const [allNotes, setAllNotes] = useState([]);
   const [isSearch, setIsSearch] = useState(false);
@@ -35,7 +30,7 @@ const Home = () => {
   });
 
   useEffect(() => {
-    if (currentUser === null || !currentUser) {
+    if (!currentUser) {
       navigate("/login");
     } else {
       setUserInfo(currentUser?.rest);
@@ -43,21 +38,12 @@ const Home = () => {
     }
   }, []);
 
-  // get all notes
   const getAllNotes = async () => {
     try {
-      // const res = await axios.get("http://localhost:3000/api/note/all", {
-      //   withCredentials: true,
-      // });
-
       const res = await getUserAllNotes();
-
-      if (res.data.success === false) {
-        console.log(res.data);
-        return;
+      if (res.data.success) {
+        setAllNotes(res.data.notes);
       }
-
-      setAllNotes(res.data.notes);
     } catch (error) {
       console.log(error);
     }
@@ -67,27 +53,16 @@ const Home = () => {
     setOpenAddEditModal({ isShown: true, data: noteDetails, type: "edit" });
   };
 
-  // Delete Note
   const deleteNote = async (data) => {
-    const noteId = data._id;
-
     try {
-      // const res = await axios.delete(
-      //   `http://localhost:3000/api/note/delete/${noteId}`,
-      //   { withCredentials: true }
-      // );
-
-      const res = await deleteUserNotes(noteId);
-
+      const res = await deleteUserNotes(data._id);
       if (res.data.success === false) {
         toast.error(res.data.message);
         return;
       }
-
-      // toast.success(res.data.message);
       toast("Deleted Successfully", {
-        icon: <MdDelete color="red" size={20} />,
-        style: { backgroundColor: "#fff", color: "black" },
+        icon: <DeleteOutlined style={{ color: "red" }} />,
+        style: { background: "#fff", color: "#000" },
       });
       getAllNotes();
     } catch (error) {
@@ -97,19 +72,11 @@ const Home = () => {
 
   const onSearchNote = async (query) => {
     try {
-      // const res = await axios.get("http://localhost:3000/api/note/search", {
-      //   params: { query },
-      //   withCredentials: true,
-      // });
-
       const res = await getUserSearchNotes(query);
-
-      if (res.data.success === false) {
-        console.log(res.data.message);
+      if (!res.data.success) {
         toast.error(res.data.message);
         return;
       }
-
       setIsSearch(true);
       setAllNotes(res.data.notes);
     } catch (error) {
@@ -123,22 +90,12 @@ const Home = () => {
   };
 
   const updateIsPinned = async (noteData) => {
-    // const noteId = noteData._id;
-
     try {
-      // const res = await axios.put(
-      //   `http://localhost:3000/api/note/update-note-pinned/${noteId}`,
-      //   { isPinned: !noteData.isPinned },
-      //   { withCredentials: true }
-      // );
-
       const res = await updatePinnedNotes(noteData);
-
-      if (res.data.success === false) {
+      if (!res.data.success) {
         toast.error(res.data.message);
         return;
       }
-
       toast.success(res.data.message);
       getAllNotes();
     } catch (error) {
@@ -153,10 +110,11 @@ const Home = () => {
         onSearchNote={onSearchNote}
         handleClearSearch={handleClearSearch}
       />
+
       <div className="container mx-auto">
         {allNotes.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-8 max-md:m-5">
-            {allNotes.map((note, index) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8 max-md:m-5">
+            {allNotes.map((note) => (
               <NoteCard
                 key={note._id}
                 title={note.title}
@@ -164,15 +122,9 @@ const Home = () => {
                 content={note.content}
                 tags={note.tags}
                 isPinned={note.isPinned}
-                onEdit={() => {
-                  handleEdit(note);
-                }}
-                onDelete={() => {
-                  deleteNote(note);
-                }}
-                onPinNote={() => {
-                  updateIsPinned(note);
-                }}
+                onEdit={() => handleEdit(note)}
+                onDelete={() => deleteNote(note)}
+                onPinNote={() => updateIsPinned(note)}
               />
             ))}
           </div>
@@ -186,36 +138,51 @@ const Home = () => {
             message={
               isSearch
                 ? "Oops! No Notes found matching your search"
-                : `Ready to capture your ideas ? Click the 'Add' button to start noting down your thoughts, inspiration and reminders. Let's get started!`
+                : "Ready to capture your ideas? Click the '+' button to start noting down your thoughts, inspiration and reminders."
             }
           />
         )}
       </div>
 
+      {/* Floating Add Button */}
       <button
-        className="w-16 h-16 flex items-center justify-center rounded-2xl bg-[#2B85FF] hover:bg-blue-600 absolute right-10 bottom-10"
-        onClick={() => {
-          setOpenAddEditModal({ isShown: true, type: "add", data: null });
-        }}
+        className="w-14 h-14 flex items-center justify-center rounded-full bg-[#2B85FF] hover:bg-blue-600 shadow-lg fixed right-8 bottom-8 transition-all"
+        onClick={() =>
+          setOpenAddEditModal({ isShown: true, type: "add", data: null })
+        }
       >
-        <MdAdd className="text-[32px] text-white" />
+        <PlusOutlined className="text-white text-2xl" />
       </button>
 
+      {/* Modal */}
       <Modal
         isOpen={openAddEditModal.isShown}
-        onRequestClose={() => {}}
-        style={{ overlay: { backgroundColor: "rgba(0,0,0,0.2)" } }}
-        contentLabel=""
-        className="w-[80%] max-md:w-[90%] max-sm:w-[95%] max-h-3/4 rounded-md mx-auto mt-14"
+        onRequestClose={() =>
+          setOpenAddEditModal({ isShown: false, type: "add", data: null })
+        }
+        style={{
+          overlay: {
+            backgroundColor: "rgba(0,0,0,0.3)",
+            backdropFilter: "blur(5px)", // blurred background
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 50,
+          },
+        }}
+        className="w-[40%] max-lg:w-[60%] max-md:w-[80%] max-sm:w-[95%] max-h-[85vh] rounded-xl bg-white shadow-lg outline-none"
       >
-        <AddEditNotes
-          onClose={() =>
-            setOpenAddEditModal({ isShown: false, type: "add", data: null })
-          }
-          noteData={openAddEditModal.data}
-          type={openAddEditModal.type}
-          getAllNotes={getAllNotes}
-        />
+        
+        <div className="overflow-y-auto max-h-[85vh] rounded-xl scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
+          <AddEditNotes
+            onClose={() =>
+              setOpenAddEditModal({ isShown: false, type: "add", data: null })
+            }
+            noteData={openAddEditModal.data}
+            type={openAddEditModal.type}
+            getAllNotes={getAllNotes}
+          />
+        </div>
       </Modal>
     </>
   );
