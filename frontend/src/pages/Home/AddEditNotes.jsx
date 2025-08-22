@@ -110,30 +110,9 @@ const AddEditNotes = ({ onClose, noteData, type, getAllNotes }) => {
       [{ list: "ordered" }, { list: "bullet" }], // Lists
       [{ indent: "-1" }, { indent: "+1" }], // Indent
       [{ align: [] }], // Text align
-      ["link", "image", "video"], // Media
       ["clean"], // Remove formatting
     ],
   };
-
-  const formats = [
-    "header",
-    "bold",
-    "italic",
-    "underline",
-    "strike",
-    "blockquote",
-    "code-block",
-    "list",
-    "bullet",
-    "indent",
-    "link",
-    "image",
-    "video",
-    "color",
-    "background",
-    "align",
-    "script",
-  ];
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50 px-4">
@@ -159,26 +138,11 @@ const AddEditNotes = ({ onClose, noteData, type, getAllNotes }) => {
 
         <div className="flex flex-col gap-2 mt-4">
           <label className="input-label text-red-400 uppercase">Content</label>
-
-          {/* <textarea
-            className="text-sm text-slate-950 outline-none bg-slate-50 p-2 rounded w-full"
-            placeholder="Content..."
-            rows={10}
-            value={content}
-            onChange={({ target }) => setContent(target.value)}
-          /> */}
-
-          {/* <RichTextEditor
-            value={content}
-            onChange={handleNotesChange}
-            className="min-h-[300px]"
-          /> */}
           <ReactQuill
             value={content}
             onChange={handleNotesChange}
             className="min-h-[300px]"
             theme="snow"
-            // formats={formats}
             modules={modules}
           />
         </div>
