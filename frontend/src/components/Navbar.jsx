@@ -8,22 +8,16 @@ import {
   signoutStart,
   signoutSuccess,
 } from "../redux/user/userSlice";
-// import axios from "axios";
-// import { toast } from "react-toastify";
 import toast from "react-hot-toast";
 import { signout } from "../Service/AuthService";
 
 const Navbar = ({ userInfo, onSearchNote, handleClearSearch }) => {
   const [searchQuery, setSearchQuery] = useState("");
-
   const navigate = useNavigate();
-
   const dispatch = useDispatch();
 
   const handleSearch = () => {
-    if (searchQuery) {
-      onSearchNote(searchQuery);
-    }
+    if (searchQuery) onSearchNote(searchQuery);
   };
 
   const onClearSearch = () => {
@@ -34,11 +28,6 @@ const Navbar = ({ userInfo, onSearchNote, handleClearSearch }) => {
   const onLogout = async () => {
     try {
       dispatch(signoutStart());
-
-      // const res = await axios.get("http://localhost:3000/api/auth/signout", {
-      //   withCredentials: true,
-      // });
-
       const res = await signout();
 
       if (res.data.success === false) {
@@ -51,30 +40,33 @@ const Navbar = ({ userInfo, onSearchNote, handleClearSearch }) => {
       dispatch(signoutSuccess());
       navigate("/login");
     } catch (error) {
-      toast.error(error.response.data.message);
-      dispatch(signoutFailure(error.response.data.message));
+      toast.error(error.response?.data?.message || "Something went wrong");
+      dispatch(signoutFailure(error.response?.data?.message));
     }
   };
 
   return (
-    <div className="bg-white flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-4 sm:px-6 py-3 drop-shadow">
-      <Link to={"/"}>
-        <h2 className="text-xl font-medium text-black text-center sm:text-left">
-          <span className="text-slate-500">Good</span>
-          <span className="text-slate-900">Notes</span>
-        </h2>
-      </Link>
+    <div className="bg-white shadow-md sticky top-0 z-50">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-3">
+        {/* Logo */}
+        <Link to={"/"}>
+          <h2 className="text-2xl font-bold tracking-tight">
+            <span className="text-[#3B82F6]">Good</span>
+            <span className="text-gray-900">Notes</span>
+          </h2>
+        </Link>
 
-      <div className="w-full sm:w-auto">
-        <SearchBar
-          value={searchQuery}
-          onChange={({ target }) => setSearchQuery(target.value)}
-          handleSearch={handleSearch}
-          onClearSearch={onClearSearch}
-        />
-      </div>
+        {/* Search Bar */}
+        <div className="w-full sm:w-auto">
+          <SearchBar
+            value={searchQuery}
+            onChange={({ target }) => setSearchQuery(target.value)}
+            handleSearch={handleSearch}
+            onClearSearch={onClearSearch}
+          />
+        </div>
 
-      <div className="flex justify-end sm:justify-start items-center gap-2">
+        {/* Profile Section */}
         <ProfileInfo userInfo={userInfo} onLogout={onLogout} />
       </div>
     </div>
