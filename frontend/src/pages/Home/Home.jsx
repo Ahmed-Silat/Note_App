@@ -113,7 +113,7 @@ const Home = () => {
 
       <div className="container mx-auto">
         {allNotes.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8 max-md:m-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8 max-md:m-5 pb-10">
             {allNotes.map((note) => (
               <NoteCard
                 key={note._id}
@@ -172,7 +172,6 @@ const Home = () => {
         }}
         className="w-[40%] max-lg:w-[60%] max-md:w-[80%] max-sm:w-[95%] max-h-[85vh] rounded-xl bg-white shadow-lg outline-none"
       >
-        
         <div className="overflow-y-auto max-h-[85vh] rounded-xl scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
           <AddEditNotes
             onClose={() =>
