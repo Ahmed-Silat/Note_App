@@ -22,6 +22,7 @@ const Signup = () => {
         .oneOf([Yup.ref("password"), null], "Passwords must match")
         .required("Confirm Password is required"),
     }),
+    
     onSubmit: async (values, { setSubmitting, resetForm }) => {
       try {
         const res = await singnUp(values.name, values.email, values.password);
@@ -36,8 +37,8 @@ const Signup = () => {
         resetForm();
         navigate("/login");
       } catch (error) {
-        console.error("Signup error:", error);
-        toast.error(error.message || "Something went wrong");
+        // console.error("Signup error:", error.response.data.message);
+        toast.error(error.response.data.message || "Something went wrong");
       } finally {
         setSubmitting(false);
       }

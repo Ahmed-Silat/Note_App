@@ -43,7 +43,7 @@ const Navbar = ({ userInfo, onSearchNote, handleClearSearch }) => {
 
       if (res.data.success === false) {
         dispatch(signoutFailure(res.data.message));
-        toast.error("res.data.message");
+        toast.error(res.data.message);
         return;
       }
 
@@ -51,8 +51,8 @@ const Navbar = ({ userInfo, onSearchNote, handleClearSearch }) => {
       dispatch(signoutSuccess());
       navigate("/login");
     } catch (error) {
-      toast.error(error.message);
-      dispatch(signoutFailure(error.message));
+      toast.error(error.response.data.message);
+      dispatch(signoutFailure(error.response.data.message));
     }
   };
 
