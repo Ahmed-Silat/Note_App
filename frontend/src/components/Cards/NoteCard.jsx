@@ -1,6 +1,7 @@
 import React from "react";
 import { MdCreate, MdDelete, MdOutlinePushPin } from "react-icons/md";
 import moment from "moment";
+import { Tooltip } from "antd";
 
 const NoteCard = ({
   title,
@@ -15,14 +16,16 @@ const NoteCard = ({
   return (
     <div className="relative border rounded-2xl p-5 shadow-sm hover:shadow-lg hover:scale-[1.01] transition-all duration-200 ease-in-out w-full max-w-sm sm:max-w-md md:max-w-full bg-[#f5f5dc]">
       {/* Pin Button */}
-      <button
-        onClick={onPinNote}
-        className={`absolute top-3 right-3 p-2 rounded-full transition-colors ${
-          isPinned ? "bg-blue-100 text-blue-600" : "bg-gray-100 text-gray-400"
-        } hover:bg-blue-200`}
-      >
-        <MdOutlinePushPin size={18} />
-      </button>
+      <Tooltip title="Pin Note">
+        <button
+          onClick={onPinNote}
+          className={`absolute top-3 right-3 p-2 rounded-full transition-colors ${
+            isPinned ? "bg-blue-100 text-blue-600" : "bg-gray-100 text-gray-400"
+          } hover:bg-blue-200`}
+        >
+          <MdOutlinePushPin size={18} />
+        </button>
+      </Tooltip>
 
       {/* Title & Date */}
       <div className="mb-3">
@@ -56,18 +59,23 @@ const NoteCard = ({
 
         {/* Actions */}
         <div className="flex items-center gap-2">
-          <button
-            onClick={onEdit}
-            className="p-2 rounded-full hover:bg-green-100 text-gray-600 hover:text-green-600 transition"
-          >
-            <MdCreate size={18} />
-          </button>
-          <button
-            onClick={onDelete}
-            className="p-2 rounded-full hover:bg-red-100 text-gray-600 hover:text-red-600 transition"
-          >
-            <MdDelete size={18} />
-          </button>
+          <Tooltip title="Edit Note">
+            <button
+              onClick={onEdit}
+              className="p-2 rounded-full hover:bg-green-100 text-gray-600 hover:text-green-600 transition"
+            >
+              <MdCreate size={18} />
+            </button>
+          </Tooltip>
+
+          <Tooltip title="Delete Note">
+            <button
+              onClick={onDelete}
+              className="p-2 rounded-full hover:bg-red-100 text-gray-600 hover:text-red-600 transition"
+            >
+              <MdDelete size={18} />
+            </button>
+          </Tooltip>
         </div>
       </div>
     </div>
