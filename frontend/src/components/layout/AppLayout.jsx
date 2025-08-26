@@ -12,11 +12,11 @@ import {
 import { signout } from "../../Service/AuthService";
 import toast from "react-hot-toast";
 import {
-  HomeOutlined,
   FileTextOutlined,
   UserOutlined,
   BellOutlined,
 } from "@ant-design/icons";
+import { IoArchiveOutline } from "react-icons/io5";
 
 const { Content } = Layout;
 
@@ -38,6 +38,12 @@ const AppLayout = () => {
       label: "Reminders",
       path: "/reminders",
       icon: <BellOutlined />,
+    },
+    {
+      key: "4",
+      label: "Archive",
+      path: "/archive",
+      icon: <IoArchiveOutline />,
     },
   ];
 
