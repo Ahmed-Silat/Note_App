@@ -16,7 +16,7 @@ const NoteCard = ({
   return (
     <div className="relative border rounded-2xl p-5 shadow-sm hover:shadow-lg hover:scale-[1.01] transition-all duration-200 ease-in-out w-full max-w-sm sm:max-w-md md:max-w-full bg-[#f5f5dc]">
       {/* Pin Button */}
-      <Tooltip title="Pin Note">
+      <Tooltip title={isPinned ? "Unpin Note" : "Pin Note"}>
         <button
           onClick={onPinNote}
           className={`absolute top-3 right-3 p-2 rounded-full transition-colors ${
