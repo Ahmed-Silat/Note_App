@@ -14,6 +14,7 @@ import {
   getUserAllNotes,
   updatePinnedNotes,
 } from "../../Service/NotesService";
+import { Tooltip } from "antd";
 
 const Home = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -145,14 +146,16 @@ const Home = () => {
       </div>
 
       {/* Floating Add Button */}
-      <button
-        className="w-14 h-14 flex items-center justify-center rounded-full bg-[#2B85FF] hover:bg-blue-600 shadow-lg fixed right-8 bottom-8 transition-all"
-        onClick={() =>
-          setOpenAddEditModal({ isShown: true, type: "add", data: null })
-        }
-      >
-        <PlusOutlined className="text-white text-2xl" />
-      </button>
+      <Tooltip title="Create New Note">
+        <button
+          className="w-14 h-14 flex items-center justify-center rounded-full bg-[#2B85FF] hover:bg-blue-600 shadow-lg fixed right-8 bottom-8 transition-all"
+          onClick={() =>
+            setOpenAddEditModal({ isShown: true, type: "add", data: null })
+          }
+        >
+          <PlusOutlined className="text-white text-2xl" />
+        </button>
+      </Tooltip>
 
       {/* Modal */}
       <Modal
