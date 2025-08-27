@@ -15,12 +15,14 @@ import {
   updatePinnedNotes,
 } from "../../Service/NotesService";
 import { Tooltip } from "antd";
+import SearchBar from "../../components/SearchBar/SearchBar";
 
 const Home = () => {
   const { currentUser } = useSelector((state) => state.user);
   const [userInfo, setUserInfo] = useState(null);
   const [allNotes, setAllNotes] = useState([]);
   const [isSearch, setIsSearch] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const navigate = useNavigate();
 
@@ -71,6 +73,10 @@ const Home = () => {
     }
   };
 
+  const handleSearch = () => {
+    if (searchQuery) onSearchNote(searchQuery);
+  };
+
   const onSearchNote = async (query) => {
     try {
       const res = await getUserSearchNotes(query);
@@ -104,13 +110,21 @@ const Home = () => {
     }
   };
 
+  const onClearSearch = () => {
+    setSearchQuery("");
+    handleClearSearch();
+  };
+
   return (
     <>
-      {/* <Navbar
-        userInfo={userInfo}
-        onSearchNote={onSearchNote}
-        handleClearSearch={handleClearSearch}
-      /> */}
+      <div className="w-full flex justify-center mt-6 mb-12">
+        <SearchBar
+          value={searchQuery}
+          onChange={({ target }) => setSearchQuery(target.value)}
+          handleSearch={handleSearch}
+          onClearSearch={onClearSearch}
+        />
+      </div>
 
       <div className="container mx-auto">
         {allNotes.length > 0 ? (
