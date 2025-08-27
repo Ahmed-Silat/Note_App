@@ -32,8 +32,8 @@ const Sidebar = ({ collapsed, links, onLogout }) => {
       <div className="flex flex-col h-full">
         {/* Logo */}
         <div className="flex items-center justify-center py-6 text-2xl font-extrabold tracking-wide text-white">
-          <span className="text-blue-400">Good</span>
-          <span className="text-pink-400">Notes</span>
+          <span className="text-blue-400">{collapsed ? "G" : "Good"}</span>
+          <span className="text-pink-400">{collapsed ? "N" : "Notes"}</span>
         </div>
 
         {/* Menu */}
