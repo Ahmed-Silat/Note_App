@@ -75,7 +75,7 @@
 
 // export default Navbar;
 
-import React from "react";
+import React, { useState } from "react";
 import { Layout, Dropdown, Avatar, Button, Menu } from "antd";
 import {
   MenuUnfoldOutlined,
@@ -83,16 +83,14 @@ import {
   UserOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
+import { useSelector } from "react-redux";
+import { getInitials } from "../utils/helper";
 
 const { Header } = Layout;
 
 const Navbar = ({ collapsed, toggleCollapse, onLogout }) => {
-  const userName = "John Doe";
-  const initials = userName
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .toUpperCase();
+  const { currentUser } = useSelector((state) => state.user);
+  const userName = currentUser?.rest?.username?.toUpperCase() || "--";
 
   const dropdownMenu = (
     <Menu className="rounded-xl shadow-lg">
@@ -139,7 +137,7 @@ const Navbar = ({ collapsed, toggleCollapse, onLogout }) => {
           style={{ backgroundColor: "#1890ff" }}
           className="cursor-pointer ml-auto"
         >
-          {initials}
+          {getInitials(userName)}
         </Avatar>
       </Dropdown>
     </Header>
