@@ -2,6 +2,8 @@ import React from "react";
 import { MdCreate, MdDelete, MdOutlinePushPin } from "react-icons/md";
 import moment from "moment";
 import { Tooltip } from "antd";
+import { IoArchiveOutline } from "react-icons/io5";
+import { BiBellPlus } from "react-icons/bi";
 
 const NoteCard = ({
   title,
@@ -59,6 +61,18 @@ const NoteCard = ({
 
         {/* Actions */}
         <div className="flex items-center gap-2">
+          <Tooltip title="Set Reminder">
+            <button className="p-2 rounded-full hover:bg-yellow-100 text-gray-900 hover:text-yellow-600 transition">
+              <BiBellPlus size={18} className="font-bold" />
+            </button>
+          </Tooltip>
+
+          <Tooltip title="Archive Note">
+            <button className="p-2 rounded-full hover:bg-blue-100 text-gray-900 hover:text-blue-600 transition">
+              <IoArchiveOutline size={18} className="font-bold" />
+            </button>
+          </Tooltip>
+
           <Tooltip title="Edit Note">
             <button
               onClick={onEdit}
